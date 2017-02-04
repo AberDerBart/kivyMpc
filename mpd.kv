@@ -1,0 +1,45 @@
+#:kivy 1.0.6
+
+<PlayerWidget>:
+	PlayButton:
+		center: self.parent.center
+	NextButton:
+		center_y: self.parent.center_y
+		center_x: self.parent.center_x +200
+	PrevButton:
+		center_y: self.parent.center_y
+		center_x: self.parent.center_x -200
+	Label:
+		font_size:35
+		x: root.width/8
+		top: root.top - 50
+		text: "Night Laser"
+	Label:
+		font_size:70
+		x: root.width/8
+		top: root.top - 130
+		text: "Party On"
+		
+
+<PlayButton>:
+	size: 100,100
+	canvas:
+		Triangle:
+			points: self.x, self.top, self.right, self.center_y , self.x, self.y
+
+<NextButton>:
+	size: 100, 100
+	canvas:
+		Triangle:
+			points: self.x, self.top, self.center_x, self.center_y , self.x, self.y
+		Triangle:
+			points: self.center_x, self.top, self.right, self.center_y , self.center_x, self.y
+<PrevButton>:
+	size: 100, 100
+	canvas:
+		Triangle:
+			points: self.right, self.top, self.center_x, self.center_y , self.right, self.y
+		Triangle:
+			points: self.center_x, self.top, self.x, self.center_y , self.center_x, self.y
+				
+
