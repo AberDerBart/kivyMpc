@@ -1,8 +1,8 @@
-import mpd
+from mpd import MPDClient, MPDError
 import threading
 from select import select
 
-client=mpd.MPDClient()
+client=MPDClient()
 client.connect("localhost",6600)
 lock=threading.Lock()
 client.send_idle()
@@ -21,21 +21,31 @@ def update():
 	client.send_idle()
 	return ret
 
+def _command(command):
+	ret=None
+	try:
+		end_idle()
+		ret=command(client)
+		client.send_idle()
+	except MPDError as e:
+		print("Error: "+str(e))
+		
+	return ret
+def currentsong():
+	return _command(MPDClient.currentsong)
+
 def play():
-	end_idle()
-	client.play()
-	print("play")
-	client.send_idle()
+	return _command(MPDClient.play)
+
+def status():
+	return _command(MPDClient.status)
+
 def next():
-	end_idle()
-	client.next()
-	print("next")
-	client.send_idle()
+	return _command(MPDClient.next)
+
 def prev():
-	end_idle()
-	client.previous()
-	print("prev")
-	client.send_idle()
+	return _command(MPDClient.previous)
+
 def close():
 	end_idle()
 	client.close()
