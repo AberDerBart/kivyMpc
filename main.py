@@ -1,11 +1,10 @@
 import kivy
-import mpd
 kivy.require('1.0.6')
 
 from kivy.app import App
 from kivy.uix.widget import Widget
 
-
+import Interface
 
 class PlayerWidget(Widget):
 	pass
@@ -13,17 +12,17 @@ class PlayerWidget(Widget):
 class PlayButton(Widget):
 	def on_touch_down(self,touch):
 		if(self.collide_point(touch.x,touch.y)):
-			print("play")
+			Interface.play()
 
 class NextButton(Widget):
 	def on_touch_down(self,touch):
 		if(self.collide_point(touch.x,touch.y)):
-			print("next")
+			Interface.next()
 
 class PrevButton(Widget):
 	def on_touch_down(self,touch):
 		if(self.collide_point(touch.x,touch.y)):
-			print("prev")
+			Interface.prev()
 
 class ButtonBox(Widget):
 	pass
