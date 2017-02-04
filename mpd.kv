@@ -3,6 +3,7 @@
 <PlayerWidget>:
 	artist: artist_label
 	title: title_label
+
 	PlayButton:
 		center: self.parent.center
 	NextButton:
@@ -14,13 +15,19 @@
 	Label:
 		id: artist_label
 		font_size:35
+		halign: 'left'
 		x: root.width/8
+		width: root.width*6/8
+		text_size: self.size
 		top: root.top - 50
 		text: "Night Laser"
 	Label:
 		id: title_label
 		font_size:70
+		halign: 'left'
 		x: root.width/8
+		width: root.width*6/8
+		text_size: self.size
 		top: root.top - 130
 		text: "Party On"
 		

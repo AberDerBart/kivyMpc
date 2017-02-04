@@ -9,7 +9,13 @@ from kivy.properties import ObjectProperty
 import Interface
 
 class PlayerWidget(Widget):
-	pass
+	artist=ObjectProperty(None)
+	title=ObjectProperty(None)
+	def update(self,dt):
+		current=Interface.currentsong()
+		if(current):
+			self.artist.text=current["artist"]
+			self.title.text=current["title"]
 
 class PlayButton(Widget):
 	def on_touch_down(self,touch):
@@ -30,17 +36,12 @@ class ButtonBox(Widget):
 	pass
 
 class MpdApp(App):
-	artist=ObjectProperty(None)
-	title=ObjectProperty(None)
 
 	def build(self):
-		return PlayerWidget()
-	def update(self,dt):
-		current=Interface.currentsong()
-		if(current):
-			self.artist.text=current["artist"]
-			self.title.text=current["title"]
+		widget=PlayerWidget()
+		Clock.schedule_interval(widget.update, .1)
+		return widget
+
 if __name__ == '__main__':
 	app=MpdApp()
-	Clock.schedule_interval(app.update, .1)
 	app.run()
