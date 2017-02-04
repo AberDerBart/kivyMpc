@@ -25,11 +25,13 @@ def _command(command):
 	ret=None
 	try:
 		end_idle()
-		ret=command(client)
+		try:
+			ret=command(client)
+		except MPDError as e:
+			print("Command failed: "+str(e))
 		client.send_idle()
 	except MPDError as e:
 		print("Error: "+str(e))
-		
 	return ret
 def currentsong():
 	return _command(MPDClient.currentsong)
