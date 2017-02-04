@@ -1,6 +1,8 @@
 #:kivy 1.0.6
 
 <PlayerWidget>:
+	artist: artist_label
+	title: title_label
 	PlayButton:
 		center: self.parent.center
 	NextButton:
@@ -10,11 +12,13 @@
 		center_y: self.parent.center_y
 		center_x: self.parent.center_x -200
 	Label:
+		id: artist_label
 		font_size:35
 		x: root.width/8
 		top: root.top - 50
 		text: "Night Laser"
 	Label:
+		id: title_label
 		font_size:70
 		x: root.width/8
 		top: root.top - 130
