@@ -1,0 +1,25 @@
+#:kivy 1.0.6
+#:import Playlist Playlist
+
+<PlaylistWidget>:
+	playlistWidget: playlist
+	canvas:
+		Color:
+			rgb: 0,0,0
+		Rectangle:
+			pos: self.pos
+			size: self.size
+	BoxLayout:
+		orientation:"vertical"
+		pos: root.pos
+		size: root.size
+		size: root.size
+		padding: self.height/10
+		ListView:
+			id: playlist
+			font_size: 50
+			selected_color: 1,0,0,1
+			deselected_color: 0,1,0,1
+			item_strings: [str(index) for index in range(100)]
+		Button:
+			on_press: root.update()

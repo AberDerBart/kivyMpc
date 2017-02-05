@@ -71,6 +71,9 @@ def _command(command):
 def currentsong():
 	return _command(MPDClient.currentsong)
 
+def playlist():
+	return _command(MPDClient.playlistinfo)
+
 def play():
 	return _command(MPDClient.play)
 
