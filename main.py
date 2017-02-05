@@ -12,7 +12,7 @@ class PlayerWidget(Widget):
 	artist=ObjectProperty(None)
 	title=ObjectProperty(None)
 	def update(self,dt):
-		if(Interface.update()):
+		if(Interface.update() or self.title.text==""):
 			current=Interface.currentsong()
 			if(current):
 				self.artist.text=current["artist"]
