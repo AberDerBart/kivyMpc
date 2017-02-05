@@ -12,10 +12,11 @@ class PlayerWidget(Widget):
 	artist=ObjectProperty(None)
 	title=ObjectProperty(None)
 	def update(self,dt):
-		current=Interface.currentsong()
-		if(current):
-			self.artist.text=current["artist"]
-			self.title.text=current["title"]
+		if(Interface.update()):
+			current=Interface.currentsong()
+			if(current):
+				self.artist.text=current["artist"]
+				self.title.text=current["title"]
 
 class PlayButton(Widget):
 	def on_touch_down(self,touch):

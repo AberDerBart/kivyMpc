@@ -1,11 +1,8 @@
-from mpd import MPDClient, MPDError
-import threading
+from mpd import MPDClient, MPDError, ConnectionError
 from select import select
 
 client=MPDClient()
-client.connect("localhost",6600)
-lock=threading.Lock()
-client.send_idle()
+connected=False
 
 def end_idle():
 	canRead=select([client],[],[],0)[0]
@@ -15,11 +12,43 @@ def end_idle():
 	else:
 		client.noidle()
 		return None
+def connect():
+	global connected
+	if not connected:
+		try:
+			client.connect("localhost",6600)
+			client.send_idle()
+			connected=True
+		except MPDError as e:
+			print("MPDError: "+str(e))
+		except Exception as e:
+			print("Exception: "+str(e))
+
+def disconnect():
+	global connected
+	try:
+		connected=False
+		client.disconnect()
+	except MPDError as e:
+		print("MPDError: "+str(e))
+	except Exception as e:
+		print("Exception: "+str(e))
 
 def update():
-	ret=end_idle()
-	client.send_idle()
-	return ret
+	connect()
+
+	try:
+		ret=end_idle()
+		client.send_idle()
+		return ret
+	except ConnectionError as e:
+		disconnect()
+	except MPDError as e:
+		print("MPDError: "+str(e))
+	except Exception as e:
+		print("Exception: "+str(e))
+		disconnect()
+	return None
 
 def _command(command):
 	ret=None
@@ -30,9 +59,15 @@ def _command(command):
 		except MPDError as e:
 			print("Command failed: "+str(e))
 		client.send_idle()
+	except ConnectionError as e:
+		disconnect()
 	except MPDError as e:
-		print("Error: "+str(e))
+		print("MPDError: "+str(e))
+	except Exception as e:
+		print("Exception: "+str(e))
+		disconnect()
 	return ret
+
 def currentsong():
 	return _command(MPDClient.currentsong)
 
