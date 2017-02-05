@@ -23,11 +23,11 @@ class PlayerWidget(Widget):
 
 class PlaybackButtons(Widget):
 	def play(self):
-		print("play")
+		Interface.play()
 	def next(self):
-		print("next")
+		Interface.next()
 	def prev(self):
-		print("prev")
+		Interface.prev()
 
 class MpdApp(App):
 
