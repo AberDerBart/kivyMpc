@@ -3,54 +3,51 @@
 <PlayerWidget>:
 	artist: artist_label
 	title: title_label
-
-	PlayButton:
-		center: self.parent.center
-	NextButton:
-		center_y: self.parent.center_y
-		center_x: self.parent.center_x +200
-	PrevButton:
-		center_y: self.parent.center_y
-		center_x: self.parent.center_x -200
-	Label:
-		id: artist_label
-		font_size:35
-		halign: 'left'
-		x: root.width/8
-		width: root.width*6/8
-		text_size: self.size
-		top: root.top - 50
-		text: "Night Laser"
-	Label:
-		id: title_label
-		font_size:70
-		halign: 'left'
-		x: root.width/8
-		width: root.width*6/8
-		text_size: self.size
-		top: root.top - 130
-		text: "Party On"
-		
-
-<PlayButton>:
-	size: 100,100
-	canvas:
-		Triangle:
-			points: self.x, self.top, self.right, self.center_y , self.x, self.y
-
-<NextButton>:
-	size: 100, 100
-	canvas:
-		Triangle:
-			points: self.x, self.top, self.center_x, self.center_y , self.x, self.y
-		Triangle:
-			points: self.center_x, self.top, self.right, self.center_y , self.center_x, self.y
-<PrevButton>:
-	size: 100, 100
-	canvas:
-		Triangle:
-			points: self.right, self.top, self.center_x, self.center_y , self.right, self.y
-		Triangle:
-			points: self.center_x, self.top, self.x, self.center_y , self.center_x, self.y
+	PageLayout:
+		size: root.size
+		pos: root.pos
+		border: 10
+		BoxLayout:
+			orientation: "vertical"
+			size: root.size
+			padding: self.height/10
+			Label:
+				id: artist_label
+				font_size:self.height*0.3
+				text_size: self.size
+				valign: "middle"
+				text: "Artist"
+			Label:
+				id: title_label
+				font_size:self.height*0.6
+				text_size: self.size
+				valign: "middle"
+				text: "Title"
+			ProgressBar:
+			PlaybackButtons:
+		Button:
 				
+			
+<PlaybackButtons>:
+	BoxLayout:
+		size: root.size
+		pos: root.pos
 
+		Button:
+			background_color: (0,0,0,0)
+			text: u"\u23EE"
+			font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+			font_size: self.height
+			on_press: root.prev()
+		Button:
+			background_color: (0,0,0,0)
+			text: u"\u23EF"
+			font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+			font_size: self.height
+			on_press: root.play()
+		Button:
+			background_color: (0,0,0,0)
+			text: u"\u23ED"
+			font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+			font_size: self.height
+			on_press: root.next()

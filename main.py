@@ -17,24 +17,17 @@ class PlayerWidget(Widget):
 			if(current):
 				self.artist.text=current["artist"]
 				self.title.text=current["title"]
+			else:
+				self.artist.text=""
+				self.title.text=""
 
-class PlayButton(Widget):
-	def on_touch_down(self,touch):
-		if(self.collide_point(touch.x,touch.y)):
-			Interface.play()
-
-class NextButton(Widget):
-	def on_touch_down(self,touch):
-		if(self.collide_point(touch.x,touch.y)):
-			Interface.next()
-
-class PrevButton(Widget):
-	def on_touch_down(self,touch):
-		if(self.collide_point(touch.x,touch.y)):
-			Interface.prev()
-
-class ButtonBox(Widget):
-	pass
+class PlaybackButtons(Widget):
+	def play(self):
+		print("play")
+	def next(self):
+		print("next")
+	def prev(self):
+		print("prev")
 
 class MpdApp(App):
 
