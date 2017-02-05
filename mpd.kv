@@ -1,9 +1,16 @@
 #:kivy 1.0.6
+#:import Interface Interface
 
 <PlayerWidget>:
 	artist: artist_label
 	title: title_label
 	progress: song_progress
+	canvas:
+		Color:
+			rgb: 0,0,0
+		Rectangle:
+			pos: self.pos
+			size: self.size
 	PageLayout:
 		size: root.size
 		pos: root.pos
@@ -30,7 +37,6 @@
 				id: song_progress
 			PlaybackButtons:
 		Button:
-				
 			
 <PlaybackButtons>:
 	BoxLayout:
@@ -42,16 +48,16 @@
 			text: u"\u23EE"
 			font_name: "/usr/share/fonts/TTF/Symbola.ttf"
 			font_size: self.height
-			on_press: root.prev()
+			on_press: Interface.prev()
 		Button:
 			background_color: (0,0,0,0)
 			text: u"\u23EF"
 			font_name: "/usr/share/fonts/TTF/Symbola.ttf"
 			font_size: self.height
-			on_press: root.play()
+			on_press: Interface.play()
 		Button:
 			background_color: (0,0,0,0)
 			text: u"\u23ED"
 			font_name: "/usr/share/fonts/TTF/Symbola.ttf"
 			font_size: self.height
-			on_press: root.next()
+			on_press: Interface.next()

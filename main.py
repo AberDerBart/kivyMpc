@@ -29,13 +29,9 @@ class PlayerWidget(Widget):
 				self.progress.value=0
 		else:
 			self.progress.value+=.1
+
 class PlaybackButtons(Widget):
-	def play(self):
-		Interface.play()
-	def next(self):
-		Interface.next()
-	def prev(self):
-		Interface.prev()
+	pass
 
 class MpdApp(App):
 
