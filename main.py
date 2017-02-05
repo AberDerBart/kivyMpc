@@ -22,7 +22,7 @@ class PlayerWidget(Widget):
 				self.artist.text=""
 				self.title.text=""
 			status=Interface.status()	
-			if(status):
+			if(status and "duration" in status and "elapsed" in status):
 				self.progress.max=float(status["duration"])
 				self.progress.value=float(status["elapsed"])
 			else:
