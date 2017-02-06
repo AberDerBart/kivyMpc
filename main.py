@@ -55,6 +55,10 @@ class MpdApp(App):
 		sm.add_widget(PlayerWidget(name="player"))
 		sm.add_widget(MpcSettings(name="settings"))
 		return sm
+	def build_config(self,config):
+		config.setdefaults("Connection",{"host":"localhost","port":6600})
+	def build_settings(self,settings):
+		settings.add_json_panel("Connection", self.config, "connectionSettings.json")
 
 if __name__ == '__main__':
 	app=MpdApp()

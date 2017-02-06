@@ -1,0 +1,17 @@
+[
+    {
+        "type": "string",
+        "title": "Host",
+        "desc": "The MPD host to connect to",
+        "section": "Connection",
+        "key": "host"
+    },
+    {
+        "type": "numeric",
+        "title": "Port",
+        "desc": "The port to connect to",
+        "section": "Connection",
+        "key": "port"
+    }
+]
+

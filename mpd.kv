@@ -28,7 +28,8 @@
 					size: self.size
 			orientation:"vertical"
 			Button:
-				on_press: root.manager.current="settings"
+				on_press: app.open_settings()
+				on_press: root.drawer.state="closed"
 				background_color: (0,0,0,0)
 				text: u"\u2699"
 				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
