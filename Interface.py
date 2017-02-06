@@ -3,6 +3,7 @@ from select import select
 
 client=MPDClient()
 connected=False
+state=None
 
 def end_idle():
 	canRead=select([client],[],[],0)[0]
@@ -77,8 +78,18 @@ def playlist():
 def play():
 	return _command(MPDClient.play)
 
+def toggle():
+	if(state and state in ["play"]):
+		_command(MPDClient.pause)
+	else:
+		_command(MPDClient.play)
+
 def status():
-	return _command(MPDClient.status)
+	global state
+	s=_command(MPDClient.status)
+	if "state" in s:
+		state=s["state"]
+	return s
 
 def next():
 	return _command(MPDClient.next)

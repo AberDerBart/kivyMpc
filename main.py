@@ -14,6 +14,7 @@ class PlayerWidget(Widget):
 	progress=ObjectProperty(None)
 	def update(self,dt):
 		if(Interface.update() or self.title.text==""):
+			"""if there is a current song, display it, else display nothing"""
 			current=Interface.currentsong()
 			if(current):
 				self.artist.text=current["artist"]
@@ -21,6 +22,8 @@ class PlayerWidget(Widget):
 			else:
 				self.artist.text=""
 				self.title.text=""
+
+			"""if the song updates, update the progressbar"""
 			status=Interface.status()	
 			if(status and "duration" in status and "elapsed" in status):
 				self.progress.max=float(status["duration"])
@@ -28,7 +31,9 @@ class PlayerWidget(Widget):
 			else:
 				self.progress.value=0
 		else:
-			self.progress.value+=.1
+			"""if playing, let the progress bar run"""
+			if(Interface.state=="play"):
+				self.progress.value+=dt
 
 class PlaybackButtons(Widget):
 	pass
