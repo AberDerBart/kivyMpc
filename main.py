@@ -3,7 +3,7 @@ kivy.require('1.0.6')
 
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.uix.screenmanager import Screen, ScreenManager
+from kivy.uix.screenmanager import Screen, ScreenManager, NoTransition
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty
 
@@ -15,10 +15,12 @@ class PlayerWidget(Screen):
 	artist=ObjectProperty(None)
 	title=ObjectProperty(None)
 	progress=ObjectProperty(None)
+	drawer=ObjectProperty(None)
 	def on_pre_enter(self):
 		self.clock=Clock.schedule_interval(self.update,.1)
 	def on_leave(self):
 		self.clock.cancel()
+		self.drawer.state="closed"
 	def update(self,dt):
 		if(Interface.update() or self.title.text==""):
 			"""if there is a current song, display it, else display nothing"""
@@ -49,6 +51,7 @@ class MpdApp(App):
 
 	def build(self):
 		sm=ScreenManager()
+		sm.transition=NoTransition()
 		sm.add_widget(PlayerWidget(name="player"))
 		sm.add_widget(MpcSettings(name="settings"))
 		return sm
