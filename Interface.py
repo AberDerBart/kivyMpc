@@ -87,7 +87,7 @@ def toggle():
 def status():
 	global state
 	s=_command(MPDClient.status)
-	if "state" in s:
+	if s and "state" in s:
 		state=s["state"]
 	return s
 
