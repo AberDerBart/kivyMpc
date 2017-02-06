@@ -1,6 +1,7 @@
 #:kivy 1.0.6
 #:include playlist.kv
 #:import Interface Interface
+#:import NavigationDrawer libs.navigationdrawer.NavigationDrawer
 
 <PlayerWidget>:
 	artist: artist_label
@@ -12,12 +13,33 @@
 		Rectangle:
 			pos: self.pos
 			size: self.size
-	PageLayout:
+	NavigationDrawer:
 		size: root.size
 		pos: root.pos
-		border: root.width/10
-		swipe_threshold: root.width/4
 		BoxLayout:
+			orientation:"vertical"
+			canvas.before:
+				Color:
+					rgb: 0,0,0
+				Rectangle:
+					pos: self.pos
+					size: self.size
+			Button:
+				text: "Lib"
+				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+			Button:
+				text: "Pll"
+				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+			Button:
+				background_color: (0,0,0,0)
+				text: u"\u23F0"
+				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+				font_size: self.height
+			Button:
+				text: "cfg"
+				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+		BoxLayout:
+			pos:root.pos
 			orientation: "vertical"
 			size: root.size
 			padding: self.height/10
@@ -39,31 +61,6 @@
 				id: song_progress
 				size_hint_y: 0.5
 			PlaybackButtons:
-		BoxLayout:
-			Widget:
-				size_hint_x: 3
-			BoxLayout:
-				orientation:"vertical"
-				canvas.before:
-					Color:
-						rgb: 0,0,0
-					Rectangle:
-						pos: self.pos
-						size: self.size
-				Button:
-					text: "Lib"
-					font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-				Button:
-					text: "Pll"
-					font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-				Button:
-					background_color: (0,0,0,0)
-					text: u"\u23F0"
-					font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-					font_size: self.height
-				Button:
-					text: "cfg"
-					font_name: "/usr/share/fonts/TTF/Symbola.ttf"
 				
 			
 <PlaybackButtons>:
