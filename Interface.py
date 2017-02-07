@@ -1,7 +1,8 @@
 from mpd import MPDClient, MPDError, ConnectionError
 from select import select
 from kivy.event import EventDispatcher
-from kivy.properties import StringProperty,NumericProperty
+from kivy.properties import StringProperty,NumericProperty,OptionProperty
+import threading
 
 class Interface(EventDispatcher):
 	artist=StringProperty("")
@@ -9,14 +10,17 @@ class Interface(EventDispatcher):
 	elapsed=NumericProperty(0)
 	duration=NumericProperty(1)
 	state=StringProperty("")
-	
+	port=NumericProperty(6600)
+	host=StringProperty("localhost")
+
+	connectionState=OptionProperty("disconnected", options=["disconnected","connecting","connected"])
 	
 	def __init__(self):
 		self.client=MPDClient()
-		self.connected=False
+		self.thread=None
+		self.connected=True
 		self.status=None
-		self.host="faultier"
-		self.port=6600
+		self.propLock=threading.Lock()
 	def _end_idle(self):
 		canRead=select([self.client],[],[],0)[0]
 
@@ -26,16 +30,24 @@ class Interface(EventDispatcher):
 			self.client.noidle()
 			return None
 	def connect(self):
-		if not self.connected:
-			try:
-				self.client.connect(self.host,self.port)
-				self.connected=True
-				self._fetch()
-				self.client.send_idle()
-			except MPDError as e:
-				print("MPDError: "+str(e))
-			except Exception as e:
-				print("Exception: "+str(e))
+		if(self.connectionState=="disconnected"):
+			if (not self.thread) or (not self.thread.is_alive()):
+				self.thread=threading.Thread(target=self._connect,args=())
+				self.connectionState="connecting"
+				self.thread.start()
+		elif(self.connectionState=="connecting"):
+			if(self.thread and not self.thread.is_alive()):
+				self.connectionState="connected"
+	def _connect(self):
+		try:
+			self.client.connect(self.host,self.port)
+			self.connected=True
+			self._fetch()
+			self.client.send_idle()
+		except MPDError as e:
+			print("MPDError: "+str(e))
+		except Exception as e:
+			print("Exception: "+str(e))
 
 	def disconnect(self):
 		try:
