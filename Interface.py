@@ -80,14 +80,12 @@ class InterfaceWorker():
 		canRead=select([self.client],[],[],0)[0]
 		if(canRead):
 			self.client.fetch_idle()
-			print("update")
 			self._statusUpdate()
 			self.client.send_idle()
 	def loop(self):
 		while(True):
-			print("Connecting")
 			self._connect()
-			print("Connected")
+			self._statusUpdate()
 			self.client.send_idle()
 			while(self.connected):
 				self._handleQueue()
@@ -118,7 +116,7 @@ class KivyInterface(EventDispatcher):
 		(status,currentsong)=self.worker.getData()
 		self.state=status.get("state","Error")
 		self.artist=currentsong.get("artist","Artist")
-		self.title=currentsong.get("title","Title")
+		self.title=currentsong.get("title",currentsong.get("file","Title"))
 	def play(self):
 		return self.worker.command(MPDClient.play)
 
