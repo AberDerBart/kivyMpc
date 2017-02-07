@@ -1,10 +1,8 @@
-#:import Interface Interface
+#:import Interface Interface.Interface
 #:import NavigationDrawer libs.navigationdrawer.NavigationDrawer
+#:import iFace Interface.iFace
 
 <PlayerWidget>:
-	artist: artist_label
-	title: title_label
-	progress: song_progress
 	drawer: nav_drawer
 	canvas:
 		Color:
@@ -52,20 +50,20 @@
 			size: root.size
 			padding: self.height/10
 			Label:
-				id: artist_label
 				font_size:self.height*0.5
 				text_size: self.size
 				valign: "middle"
-				text: "Artist"
+				text: iFace.artist
 				shorten: True
 			Label:
-				id: title_label
 				font_size:self.height*0.5
 				text_size: self.size
 				valign: "middle"
-				text: ""
+				text: iFace.title
 				shorten: True
 			ProgressBar:
+				max: iFace.duration
+				value: iFace.elapsed
 				id: song_progress
 				size_hint_y: 0.5
 			PlaybackButtons:
@@ -81,16 +79,16 @@
 			text: u"\u23EE"
 			font_name: "/usr/share/fonts/TTF/Symbola.ttf"
 			font_size: self.height
-			on_press: Interface.prev()
+			on_press: iFace.prev()
 		Button:
 			background_color: (0,0,0,0)
 			text: u"\u23EF"
 			font_name: "/usr/share/fonts/TTF/Symbola.ttf"
 			font_size: self.height
-			on_press: Interface.toggle()
+			on_press: iFace.toggle()
 		Button:
 			background_color: (0,0,0,0)
 			text: u"\u23ED"
 			font_name: "/usr/share/fonts/TTF/Symbola.ttf"
 			font_size: self.height
-			on_press: Interface.next()
+			on_press: iFace.next()
