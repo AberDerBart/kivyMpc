@@ -4,68 +4,34 @@ from kivy.event import EventDispatcher
 from kivy.properties import StringProperty,NumericProperty,OptionProperty
 import threading
 
-class Interface(EventDispatcher):
-	artist=StringProperty("")
-	title=StringProperty("")
-	elapsed=NumericProperty(0)
-	duration=NumericProperty(1)
-	state=StringProperty("")
-	port=NumericProperty(6600)
-	host=StringProperty("localhost")
+class InterfaceWorker():
+	host="localhost"
+	port=6600
 
-	connectionState=OptionProperty("disconnected", options=["disconnected","connecting","connected"])
-	
+	status={}
+	currentsong={}
+
 	def __init__(self):
 		self.client=MPDClient()
-
-		self._thread=None
-		self._task=None
-		self._task_reply=None
-	def _exec_task(self,task):
-		if not self._task_done():
-			return False
-		self._task=task
-		self._thread=threading.Thread(target=self._task,args=())
-		self._thread.start()
-		return True
-	def _task_done(self):
-		if not self._thread:
-			return True
-		return not self._thread.is_alive()
-
-	def _end_idle(self):
-		canRead=select([self.client],[],[],0)[0]
-
-		if(canRead):
-			return self.client.fetch_idle()
-		else:
-			self.client.noidle()
-			return None
-	def connect(self):
-		if(self.connectionState=="disconnected"):
-			if self._task_done():
-				self.connectionState="connecting"
-				self._exec_task(self._connect)
-		elif(self.connectionState=="connecting"):
-			if(self._task_done()):
-				if(self._task_reply):
-					self.connectionState="connected"
-				else:
-					self.connectionState="disconnected"
+		self.thread=threading.Thread(target=self.loop,args=())
+		self.thread.daemon=True
+		self.cmdLock=threading.Lock()
+		self.dataLock=threading.Lock()
+		self.connected=False
+		self.queue=[]
+		self.thread.start()
 	def _connect(self):
-		self._task_reply=False
-		try:
-			self.client.connect(self.host,self.port)
-			self._task_reply=True
-			self._fetch()
-			self.client.send_idle()
-		except MPDError as e:
-			print("MPDError: "+str(e))
-		except Exception as e:
-			print("Exception: "+str(e))
-
-
-	def disconnect(self):
+		while not self.connected:
+			try:
+				self.dataLock.acquire()
+				self.client.connect(self.host,self.port)
+				self.connected=True
+			except MPDError as e:
+				print("MPDError: "+str(e))
+			except Exception as e:
+				print("Exception: "+str(e))
+			self.dataLock.release()
+	def _disconnect(self):
 		try:
 			self.connected=False
 			self.client.disconnect()
@@ -73,65 +39,98 @@ class Interface(EventDispatcher):
 			print("MPDError: "+str(e))
 		except Exception as e:
 			print("Exception: "+str(e))
-	def _fetch(self):
-		status=self.client.status()
-		if(status):
-			self.duration=float(status.get("duration","1"))
-			self.elapsed=float(status.get("elapsed","0"))
-			self.state=status.get("state","")
+	def _handleQueue(self):
+		try:
+			#grab queue
+			self.cmdLock.acquire()
+			queue=self.queue
+			self.queue=[]
+			self.cmdLock.release()
 
-		current=self.client.currentsong()
-		if current:
-			self.artist=current.get("artist","")
-			self.title=current.get("title","")
+			#process queue
+			if len(queue)!=0:
+				self.client.noidle()
+				for cmd in queue:
+					cmd(self.client)
+				self._statusUpdate()
+				self.client.send_idle()
+		except ConnectionError as e:
+			self._disconnect()
+			self.connected=false
+		except MPDError as e:
+			print("MPDError: "+str(e))
+		except Exception as e:
+			print("Exception: "+str(e))
+	def _statusUpdate(self):
+		try:
+			status=self.client.status()
+			currentsong=self.client.currentsong()
+			self.dataLock.acquire()
+			self.currentsong=currentsong
+			self.status=status
+			self.dataLock.release()
+		except ConnectionError as e:
+			self._disconnect()
+			self.connected=false
+		except MPDError as e:
+			print("MPDError: "+str(e))
+		except Exception as e:
+			print("Exception: "+str(e))
+	def _update(self):
+		canRead=select([self.client],[],[],0)[0]
+		if(canRead):
+			self.client.fetch_idle()
+			print("update")
+			self._statusUpdate()
+			self.client.send_idle()
+	def loop(self):
+		while(True):
+			print("Connecting")
+			self._connect()
+			print("Connected")
+			self.client.send_idle()
+			while(self.connected):
+				self._handleQueue()
+				self._update()
+	def command(self,cmd):
+		self.cmdLock.acquire()
+		self.queue.append(cmd)
+		self.cmdLock.release()
+	def getData(self):
+		self.dataLock.acquire()
+		retn=(self.status,self.currentsong)
+		self.dataLock.release()
+		return retn
+
+class KivyInterface(EventDispatcher):
+	artist=StringProperty("")
+	title=StringProperty("")
+	elapsed=NumericProperty(0)
+	duration=NumericProperty(0)
+	state=StringProperty("")
+	port=NumericProperty(6600)
+	host=StringProperty("localhost")
+
+	def __init__(self):
+		self.worker=InterfaceWorker()
+			
 	def update(self,dt):
-		self.connect()
-		try:
-			ret=self._end_idle()
-
-			if ret:
-				print(str(ret))
-				self._fetch()
-			self.client.send_idle()
-		except ConnectionError as e:
-			self.disconnect()
-		except MPDError as e:
-			print("MPDError: "+str(e))
-		except Exception as e:
-			print("Exception: "+str(e))
-			self.disconnect()
-		if(self.state=="play"):
-			self.elapsed+=dt
-		return None
-	def _command(self,command):
-		ret=None
-		try:
-			self._end_idle()
-			try:
-				ret=command(self.client)
-			except MPDError as e:
-				print("Command failed: "+str(e))
-			self.client.send_idle()
-		except ConnectionError as e:
-			self.disconnect()
-		except MPDError as e:
-			print("MPDError: "+str(e))
-		except Exception as e:
-			print("Exception: "+str(e))
-			self.disconnect()
-		return ret
+		(status,currentsong)=self.worker.getData()
+		self.state=status.get("state","Error")
+		self.artist=currentsong.get("artist","Artist")
+		self.title=currentsong.get("title","Title")
 	def play(self):
-		return self._command(MPDClient.play)
+		return self.worker.command(MPDClient.play)
 
 	def toggle(self):
 		if(self.state):
 			if(self.state=="play"):
-				self._command(MPDClient.pause)
+				self.worker.command(MPDClient.pause)
 			else:
-				self._command(MPDClient.play)
+				self.worker.command(MPDClient.play)
 	def next(self):
-		return self._command(MPDClient.next)
+		return self.worker.command(MPDClient.next)
 	def prev(self):
-		return self._command(MPDClient.previous)
+		return self.worker.command(MPDClient.previous)
 
-iFace=Interface()
+iFace=KivyInterface()
