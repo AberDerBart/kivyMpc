@@ -15,7 +15,7 @@ class Interface(EventDispatcher):
 		self.client=MPDClient()
 		self.connected=False
 		self.status=None
-		self.host="localhost"
+		self.host="faultier"
 		self.port=6600
 	def _end_idle(self):
 		canRead=select([self.client],[],[],0)[0]
@@ -46,25 +46,23 @@ class Interface(EventDispatcher):
 		except Exception as e:
 			print("Exception: "+str(e))
 	def _fetch(self):
-		print("fetch")
 		status=self.client.status()
 		if(status):
-			print("status")
 			self.duration=float(status.get("duration","1"))
 			self.elapsed=float(status.get("elapsed","0"))
 			self.state=status.get("state","")
 
 		current=self.client.currentsong()
 		if current:
-			print("current")
 			self.artist=current.get("artist","")
 			self.title=current.get("title","")
-	def update(self):
+	def update(self,dt):
 		self.connect()
 		try:
 			ret=self._end_idle()
 
 			if ret:
+				print(str(ret))
 				self._fetch()
 			self.client.send_idle()
 		except ConnectionError as e:
@@ -74,6 +72,8 @@ class Interface(EventDispatcher):
 		except Exception as e:
 			print("Exception: "+str(e))
 			self.disconnect()
+		if(self.state=="play"):
+			self.elapsed+=dt
 		return None
 	def _command(self,command):
 		ret=None

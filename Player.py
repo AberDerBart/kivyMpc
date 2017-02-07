@@ -16,6 +16,6 @@ class PlayerWidget(Screen):
 		self.clock.cancel()
 		self.drawer.state="closed"
 	def update(self,dt):
-		Interface.iFace.update()
+		Interface.iFace.update(dt)
 		pass
 		#this is to be adapted for the new mpc interface
