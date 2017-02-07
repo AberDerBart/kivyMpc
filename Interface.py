@@ -3,6 +3,7 @@ from select import select
 from kivy.event import EventDispatcher
 from kivy.properties import StringProperty,NumericProperty,OptionProperty
 import threading
+import time
 
 class InterfaceWorker():
 	host="localhost"
@@ -20,6 +21,7 @@ class InterfaceWorker():
 		self.connected=False
 		self.queue=[]
 		self.thread.start()
+		self.dataTime=0
 	def _connect(self):
 		while not self.connected:
 			try:
@@ -68,6 +70,7 @@ class InterfaceWorker():
 			self.dataLock.acquire()
 			self.currentsong=currentsong
 			self.status=status
+			self.dataTime=time.time()
 			self.dataLock.release()
 		except ConnectionError as e:
 			self._disconnect()
@@ -90,13 +93,14 @@ class InterfaceWorker():
 			while(self.connected):
 				self._handleQueue()
 				self._update()
+				time.sleep(.1)
 	def command(self,cmd):
 		self.cmdLock.acquire()
 		self.queue.append(cmd)
 		self.cmdLock.release()
 	def getData(self):
 		self.dataLock.acquire()
-		retn=(self.status,self.currentsong)
+		retn=(self.status,self.currentsong,self.dataTime)
 		self.dataLock.release()
 		return retn
 
@@ -113,10 +117,14 @@ class KivyInterface(EventDispatcher):
 		self.worker=InterfaceWorker()
 			
 	def update(self,dt):
-		(status,currentsong)=self.worker.getData()
+		(status,currentsong,dataTime)=self.worker.getData()
 		self.state=status.get("state","Error")
 		self.artist=currentsong.get("artist","Artist")
 		self.title=currentsong.get("title",currentsong.get("file","Title"))
+		self.elapsed=float(status.get("elapsed","0"))
+		self.duration=float(currentsong.get("time","0"))
+		if(self.state=="play"):
+			self.elapsed+=time.time()-dataTime
 	def play(self):
 		return self.worker.command(MPDClient.play)
 
