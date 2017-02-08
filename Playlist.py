@@ -1,8 +1,8 @@
-from kivy.uix.widget import Widget
+from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 import Interface
 
-class PlaylistWidget(Widget):
+class PlaylistWidget(Screen):
 	playlistWidget=ObjectProperty(None)
 	def update(self):
 		if(Interface.update() or True):

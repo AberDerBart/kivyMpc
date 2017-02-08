@@ -1,5 +1,6 @@
 #:kivy 1.0.6
 #:import Playlist Playlist
+#:import iFace Interface.iFace
 
 <PlaylistWidget>:
 	playlistWidget: playlist
@@ -21,5 +22,3 @@
 			selected_color: 1,0,0,1
 			deselected_color: 0,1,0,1
 			item_strings: [str(index) for index in range(100)]
-		Button:
-			on_press: root.update()
