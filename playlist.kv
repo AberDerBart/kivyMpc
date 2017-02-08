@@ -16,7 +16,17 @@
 		size: root.size
 		size: root.size
 		padding: self.height/10
+
+		BoxLayout:
+			Button:
+				background_color: (0,0,0,0)
+				text:u"\u2B05"
+				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+				on_press: root.manager.current="player"
+				font_size: self.height *2/3
+
 		ListView:
+			size_hint_y: 8
 			id: playlist
 			font_size: 50
 			selected_color: 1,0,0,1
