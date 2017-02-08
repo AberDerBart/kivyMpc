@@ -64,7 +64,10 @@ class InterfaceWorker():
 			if len(queue)!=0:
 				self.client.noidle()
 				for cmd in queue:
-					cmd(self.client)
+					try:
+						cmd(self.client)
+					except MPDError as e:
+						print("MPDError:",e)
 				self._statusUpdate()
 				self.client.send_idle()
 		except ConnectionError as e:
