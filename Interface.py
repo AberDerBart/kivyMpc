@@ -6,11 +6,15 @@ import threading
 import time
 
 class InterfaceWorker():
-	host="localhost"
-	port=6600
+	host=""
+	port=0
 
 	status={}
 	currentsong={}
+	connectionChange=False
+	queue=[]
+	connected=False
+	dataTime=0
 
 	def __init__(self):
 		self.client=MPDClient()
@@ -18,10 +22,7 @@ class InterfaceWorker():
 		self.thread.daemon=True
 		self.cmdLock=threading.Lock()
 		self.dataLock=threading.Lock()
-		self.connected=False
-		self.queue=[]
 		self.thread.start()
-		self.dataTime=0
 	def _connect(self):
 		while not self.connected:
 			self.dataLock.acquire()
@@ -138,7 +139,6 @@ class KivyInterface(EventDispatcher):
 
 	def __init__(self):
 		self.worker=InterfaceWorker()
-			
 	def update(self,dt):
 		(status,currentsong,dataTime)=self.worker.getData()
 		self.state=status.get("state","Error")
