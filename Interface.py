@@ -58,7 +58,6 @@ class InterfaceWorker():
 				self.client.send_idle()
 		except ConnectionError as e:
 			self._disconnect()
-			self.connected=false
 		except MPDError as e:
 			print("MPDError: "+str(e))
 		except Exception as e:
@@ -74,7 +73,6 @@ class InterfaceWorker():
 			self.dataLock.release()
 		except ConnectionError as e:
 			self._disconnect()
-			self.connected=false
 		except MPDError as e:
 			print("MPDError: "+str(e))
 		except Exception as e:
@@ -82,14 +80,30 @@ class InterfaceWorker():
 	def _update(self):
 		canRead=select([self.client],[],[],0)[0]
 		if(canRead):
-			self.client.fetch_idle()
-			self._statusUpdate()
-			self.client.send_idle()
+			try:
+				self.client.fetch_idle()
+				self._statusUpdate()
+				self.client.send_idle()
+			except ConnectionError as e:
+				self._disconnect()
+			except MPDError as e:
+				print("MPDError: "+str(e))
+			except Exception as e:
+				print("Exception: "+str(e))
 	def loop(self):
 		while(True):
 			self._connect()
 			self._statusUpdate()
-			self.client.send_idle()
+
+			try:
+				self.client.send_idle()
+			except ConnectionError as e:
+				self._disconnect()
+			except MPDError as e:
+				print("MPDError: "+str(e))
+			except Exception as e:
+				print("Exception: "+str(e))
+
 			while(self.connected):
 				self._handleQueue()
 				self._update()
