@@ -24,19 +24,29 @@ class InterfaceWorker():
 		self.dataTime=0
 	def _connect(self):
 		while not self.connected:
-			try:
-				self.dataLock.acquire()
-				self.client.connect(self.host,self.port)
-				self.connected=True
-			except MPDError as e:
-				print("MPDError: "+str(e))
-			except Exception as e:
-				print("Exception: "+str(e))
+			self.dataLock.acquire()
+			port=self.port
+			host=self.host
 			self.dataLock.release()
+			try:
+				self.client.connect(host,port)
+				self.connected=True
+				print("Connection to "+self.host+" on port "+str(self.port)+" established.")
+			except MPDError as e:
+				print("_connect: MPDError: "+str(e))
+				time.sleep(5)
+			except Exception as e:
+				print("_connect: Exception: "+str(e))
+				time.sleep(5)
 	def _disconnect(self):
 		try:
 			self.connected=False
 			self.client.disconnect()
+			self.status={}
+			self.currentsong={}
+			self.queue=[]
+			self.dataTime=0
+			print("Connection closed.")
 		except MPDError as e:
 			print("MPDError: "+str(e))
 		except Exception as e:
@@ -94,7 +104,6 @@ class InterfaceWorker():
 		while(True):
 			self._connect()
 			self._statusUpdate()
-
 			try:
 				self.client.send_idle()
 			except ConnectionError as e:
