@@ -2,7 +2,18 @@
 #:import PlaylistWidget Playlist.PlaylistWidget
 #:import PlaylistItem Playlist.PlaylistItem
 #:import iFace Interface.iFace
-#:import ListAdapter kivy.adapters.listadapter.ListAdapter
+#:import SimpleListAdapter kivy.adapters.simplelistadapter.SimpleListAdapter
+
+<PlaylistItem>:
+	Button:
+		size_hint_x: 9
+		on_press: root.playAction()
+		height: root.height/10
+		id: title
+		text: root.displayText()
+	Button:
+		text:"del"
+		on_press: root.delAction()
 
 <PlaylistWidget>:
 	canvas:
@@ -30,9 +41,8 @@
 			size_hint_y: 8
 			selected_color: 1,0,0,1
 			deselected_color: 0,1,0,1
-			item_strings: [str(index) for index in range(100)]
 			adapter:
-				ListAdapter(
-				data=["Item {0}".format(i) for i in range(100)],
+				SimpleListAdapter(
+				data=iFace.playlist,
 				cls=PlaylistItem
 				)
