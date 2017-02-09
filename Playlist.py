@@ -19,13 +19,4 @@ class PlaylistItem(SelectableView,BoxLayout):
 		self.add_widget(ListItemButton())
 
 class PlaylistWidget(Screen):
-	def processPlaylist(self,obj,text):
-		clsDicts=[]
-		clsDicts.append({"cls":ListItemButton,
-			"kwargs":{"text":"blubb"}})
-
-		retDict={}
-		retDict["text"]="test"
-		retDict["cls_dicts"]=clsDicts
-		return retDict
 	pass
