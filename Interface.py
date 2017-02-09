@@ -215,5 +215,9 @@ class KivyInterface(EventDispatcher):
 	def playid(self,index):
 		if self.worker:
 			return self.worker.command(MPDClient.playid,(index,))
+	def deleteid(self,index):
+		if self.worker:
+			return self.worker.command(MPDClient.deleteid,(index,))
+		
 
 iFace=KivyInterface()

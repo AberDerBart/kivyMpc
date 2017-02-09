@@ -17,7 +17,7 @@ class PlaylistItem(SelectableView,BoxLayout):
 	def playAction(self):
 		iFace.playid(self.songId)
 	def delAction(self):
-		print("del "+self.displayText())
+		iFace.deleteid(self.songId)
 
 class PlaylistWidget(Screen):
 	def __init__(self,**kwargs):
