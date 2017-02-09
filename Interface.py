@@ -15,6 +15,7 @@ class InterfaceWorker():
 	queue=[]
 	connected=False
 	dataTime=0
+	playlist=[]
 
 	def __init__(self,host,port):
 		self.host=host
@@ -91,6 +92,18 @@ class InterfaceWorker():
 			print("MPDError: "+str(e))
 		except Exception as e:
 			print("Exception: "+str(e))
+	def _playlistUpdate(self):
+		try:
+			playlist=self.client.playlistinfo()
+			self.dataLock.acquire()
+			self.playlist=playlist
+			self.dataLock.release()
+		except ConnectionError as e:
+			self._disconnect()
+		except MPDError as e:
+			print("MPDError: "+str(e))
+		except Exception as e:
+			print("Exception: "+str(e))
 	def _update(self):
 		canRead=select([self.client],[],[],0)[0]
 		if(canRead):
@@ -132,7 +145,11 @@ class InterfaceWorker():
 		self.cmdLock.release()
 	def getData(self):
 		self.dataLock.acquire()
-		retn=(self.status,self.currentsong,self.dataTime)
+		retn={"status":self.status,
+		"currentsong":self.currentsong,
+		"dataTime":self.dataTime,
+		"playlist":self.playlist
+		}
 		self.dataLock.release()
 		return retn
 
@@ -156,7 +173,14 @@ class KivyInterface(EventDispatcher):
 			self.worker=InterfaceWorker(host,port)
 	def update(self,dt):
 		if(self.worker):
-			(status,currentsong,dataTime)=self.worker.getData()
+			data=self.worker.getData()
+			
+			status=data["status"]
+			currentsong=data["currentsong"]
+			dataTime=data["dataTime"]
+
+			self.playlist=data["playlist"]
+
 			self.state=status.get("state","Error")
 			self.artist=currentsong.get("artist","Artist")
 			self.title=currentsong.get("title",currentsong.get("file","Title"))
