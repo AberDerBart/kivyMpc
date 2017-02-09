@@ -6,14 +6,16 @@ from Interface import iFace
 
 class PlaylistItem(SelectableView,BoxLayout):
 	songDict={}
+	songId=-1
 	def __init__(self, **kwargs):
 		self.songDict = kwargs.pop('text', None)
+		self.songId=self.songDict["id"]
 		super(PlaylistItem, self).__init__(**kwargs)
 
 	def displayText(self):
 		return self.songDict["artist"] + " - " + self.songDict["title"]
 	def playAction(self):
-		print("play "+self.displayText())
+		iFace.playid(self.songId)
 	def delAction(self):
 		print("del "+self.displayText())
 

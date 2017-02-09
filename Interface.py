@@ -64,9 +64,9 @@ class InterfaceWorker():
 			#process queue
 			if len(queue)!=0:
 				self.client.noidle()
-				for cmd in queue:
+				for (cmd,args) in queue:
 					try:
-						cmd(self.client)
+						cmd(self.client,*args)
 					except MPDError as e:
 						print("MPDError:",e)
 				self._statusUpdate()
@@ -147,9 +147,9 @@ class InterfaceWorker():
 		self._disconnect()
 	def stop(self):
 		self.runLock.acquire()
-	def command(self,cmd):
+	def command(self,cmd,args=()):
 		self.cmdLock.acquire()
-		self.queue.append(cmd)
+		self.queue.append((cmd,args))
 		self.cmdLock.release()
 	def getData(self):
 		self.dataLock.acquire()
@@ -212,5 +212,8 @@ class KivyInterface(EventDispatcher):
 	def prev(self):
 		if self.worker:
 			return self.worker.command(MPDClient.previous)
+	def playid(self,index):
+		if self.worker:
+			return self.worker.command(MPDClient.playid,(index,))
 
 iFace=KivyInterface()
