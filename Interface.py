@@ -108,8 +108,13 @@ class InterfaceWorker():
 		canRead=select([self.client],[],[],0)[0]
 		if(canRead):
 			try:
-				self.client.fetch_idle()
-				self._statusUpdate()
+				updates=self.client.fetch_idle()
+				if updates:
+					print(updates)
+					self._statusUpdate()
+					if "playlist" in updates:
+						self._playlistUpdate()
+
 				self.client.send_idle()
 			except ConnectionError as e:
 				self._disconnect()
