@@ -1,9 +1,15 @@
 #:kivy 1.0.6
-#:import Playlist Playlist
+#:import PlaylistWidget Playlist.PlaylistWidget
+#:import PlaylistItem Playlist.PlaylistItem
 #:import iFace Interface.iFace
+#:import SimpleListAdapter kivy.adapters.simplelistadapter.SimpleListAdapter
+#:import ListAdapter kivy.adapters.listadapter.ListAdapter
+#:import ListItemButton kivy.uix.listview.ListItemButton
+#:import CompositeListItem kivy.uix.listview.CompositeListItem
+#:import SelectableView kivy.uix.listview.SelectableView
+#:import BoxLayout kivy.uix.boxlayout.BoxLayout
 
 <PlaylistWidget>:
-	playlistWidget: playlist
 	canvas:
 		Color:
 			rgb: 0,0,0
@@ -27,8 +33,11 @@
 
 		ListView:
 			size_hint_y: 8
-			id: playlist
-			font_size: 50
 			selected_color: 1,0,0,1
 			deselected_color: 0,1,0,1
 			item_strings: [str(index) for index in range(100)]
+			adapter:
+				ListAdapter(
+				data=["Item {0}".format(i) for i in range(100)],
+				cls=PlaylistItem
+				)

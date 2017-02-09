@@ -1,14 +1,31 @@
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 import Interface
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.widget import Widget
+
+from kivy.uix.listview import ListItemButton
+from kivy.uix.listview import SelectableView
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+
+class PlaylistItem(SelectableView,BoxLayout):
+	def __init__(self, **kwargs):
+		text = kwargs.pop('text', None)
+		index = kwargs['index']
+
+		super(PlaylistItem, self).__init__(**kwargs)
+		self.add_widget(ListItemButton(size_hint_x=4))
+		self.add_widget(ListItemButton())
 
 class PlaylistWidget(Screen):
-	playlistWidget=ObjectProperty(None)
-	def update(self):
-		if(Interface.update() or True):
-			playlist=Interface.playlist()
-			if(playlist):
-				self.playlistWidget.item_strings=[item["artist"]+ " - "+ item["title"] for item in playlist]
-			else:
-				self.playlistWidget.item_strings=[]
+	def processPlaylist(self,obj,text):
+		clsDicts=[]
+		clsDicts.append({"cls":ListItemButton,
+			"kwargs":{"text":"blubb"}})
 
+		retDict={}
+		retDict["text"]="test"
+		retDict["cls_dicts"]=clsDicts
+		return retDict
+	pass
