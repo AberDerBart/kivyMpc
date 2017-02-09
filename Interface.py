@@ -1,7 +1,7 @@
 from mpd import MPDClient, MPDError, ConnectionError
 from select import select
 from kivy.event import EventDispatcher
-from kivy.properties import StringProperty,NumericProperty,OptionProperty
+from kivy.properties import StringProperty,NumericProperty,OptionProperty,ListProperty
 import threading
 import time
 
@@ -78,6 +78,7 @@ class InterfaceWorker():
 		except Exception as e:
 			print("Exception: "+str(e))
 	def _statusUpdate(self):
+		print("Updating status")
 		try:
 			status=self.client.status()
 			currentsong=self.client.currentsong()
@@ -93,6 +94,7 @@ class InterfaceWorker():
 		except Exception as e:
 			print("Exception: "+str(e))
 	def _playlistUpdate(self):
+		print("Updating playlist")
 		try:
 			playlist=self.client.playlistinfo()
 			self.dataLock.acquire()
@@ -127,6 +129,7 @@ class InterfaceWorker():
 			self.runLock.release()
 			self._connect()
 			self._statusUpdate()
+			self._playlistUpdate()
 			try:
 				self.client.send_idle()
 			except ConnectionError as e:
@@ -166,6 +169,7 @@ class KivyInterface(EventDispatcher):
 	state=StringProperty("")
 	port=NumericProperty(6600)
 	host=StringProperty()
+	playlist=ListProperty()
 	worker=None
 
 	def setConnectionSettings(self,host,port):
