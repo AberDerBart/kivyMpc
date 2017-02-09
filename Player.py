@@ -10,12 +10,5 @@ class PlaybackButtons(Widget):
 
 class PlayerWidget(Screen):
 	drawer=ObjectProperty(None)
-	def on_pre_enter(self):
-		self.clock=Clock.schedule_interval(self.update,.1)
 	def on_leave(self):
-		self.clock.cancel()
 		self.drawer.state="closed"
-	def update(self,dt):
-		Interface.iFace.update(dt)
-		pass
-		#this is to be adapted for the new mpc interface

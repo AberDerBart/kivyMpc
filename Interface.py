@@ -2,6 +2,7 @@ from mpd import MPDClient, MPDError, ConnectionError
 from select import select
 from kivy.event import EventDispatcher
 from kivy.properties import StringProperty,NumericProperty,OptionProperty,ListProperty
+from kivy.clock import Clock
 import threading
 import time
 
@@ -171,6 +172,10 @@ class KivyInterface(EventDispatcher):
 	host=StringProperty()
 	playlist=ListProperty()
 	worker=None
+
+	def __init__(self,**kwargs):
+		self.clock=Clock.schedule_interval(self.update,.1)
+		super(KivyInterface,self).__init__(**kwargs)
 
 	def setConnectionSettings(self,host,port):
 		if(int(port)!=self.port or host!=str(self.host)):

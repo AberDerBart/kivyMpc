@@ -1,7 +1,6 @@
 from kivy.uix.screenmanager import Screen
 from kivy.uix.listview import SelectableView
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
 from Interface import iFace
 
 class PlaylistItem(SelectableView,BoxLayout):
