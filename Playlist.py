@@ -12,7 +12,11 @@ class PlaylistItem(SelectableView,BoxLayout):
 		super(PlaylistItem, self).__init__(**kwargs)
 
 	def displayText(self):
-		return self.songDict["artist"] + " - " + self.songDict["title"]
+		text=""
+		if("artist" in self.songDict):
+			text+=self.songDict["artist"]+" - "
+		text+=self.songDict.get("title", self.songDict.get("file"))
+		return text
 	def playAction(self):
 		iFace.playid(self.songId)
 	def delAction(self):
