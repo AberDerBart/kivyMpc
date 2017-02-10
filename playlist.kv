@@ -6,14 +6,21 @@
 
 <PlaylistItem>:
 	Button:
+		background_color: (0,0,0,0)
 		size_hint_x: 9
 		on_press: root.playAction()
-		height: root.height/10
-		id: title
 		text: root.displayText()
+		font_size: self.height * 2/3
+		text_size: self.size
+		shorten: True
+		shorten_from: "right"
 	Button:
-		text:"del"
+		background_color: (0,0,0,0)
+		text: u"\u2716"
+		font_name: "/usr/share/fonts/TTF/Symbola.ttf"
 		on_press: root.delAction()
+		font_size: self.height * 2/3
+		text_size: self.size
 
 <PlaylistWidget>:
 	canvas:
@@ -44,5 +51,6 @@
 			adapter:
 				SimpleListAdapter(
 				data=iFace.playlist,
-				cls=PlaylistItem
+				cls=PlaylistItem,
+				args_converter=lambda row_index,x: {'text':x, 'size_hint_y':None, 'height': 50}
 				)
