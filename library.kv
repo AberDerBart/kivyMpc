@@ -11,9 +11,17 @@
 		padding: self.height/20
 		spacing: self.height/20
 
-		Button:
-			background_color: (0,0,0,0)
-			text:u"\u2B05"
-			font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-			on_press: root.manager.current="player"
-			font_size: self.height *2/3
+		Widget:
+			size_hint_y: 8
+
+		BoxLayout:
+			Button:
+				background_color: (0,0,0,0)
+				text:u"\u2B05"
+				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+				on_press: root.manager.current="player"
+				font_size: self.height *2/3
+			TextInput:
+				size_hint_x: 8
+				multiline: False
+				font_size: self.height *2/3
