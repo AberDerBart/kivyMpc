@@ -2,13 +2,14 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.listview import SelectableView
 from kivy.uix.boxlayout import BoxLayout
 from Interface import iFace
+from kivy.properties import ObjectProperty
 
 class PlaylistItem(SelectableView,BoxLayout):
 	songDict={}
 	songId=-1
 	def __init__(self, **kwargs):
-		self.songDict = kwargs.pop('text', None)
-		self.songId=self.songDict["id"]
+		self.songDict = kwargs.pop('text', {})
+		self.songId=self.songDict.get("id",-1)
 		super(PlaylistItem, self).__init__(**kwargs)
 
 	def displayText(self):
