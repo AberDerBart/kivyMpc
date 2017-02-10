@@ -3,6 +3,7 @@
 #:import PlaylistItem Playlist.PlaylistItem
 #:import iFace Interface.iFace
 #:import SimpleListAdapter kivy.adapters.simplelistadapter.SimpleListAdapter
+#:include player.kv
 
 <PlaylistItem>:
 	Button:
@@ -35,14 +36,7 @@
 		size: root.size
 		size: root.size
 		padding: self.height/10
-
-		BoxLayout:
-			Button:
-				background_color: (0,0,0,0)
-				text:u"\u2B05"
-				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-				on_press: root.manager.current="player"
-				font_size: self.height *2/3
+		spacing: self.height/10
 
 		ListView:
 			size_hint_y: 8
@@ -54,3 +48,16 @@
 				cls=PlaylistItem,
 				args_converter=lambda row_index,x: {'text':x, 'size_hint_y':None, 'height': 50}
 				)
+
+		BoxLayout:
+			Button:
+				background_color: (0,0,0,0)
+				text:u"\u2B05"
+				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+				on_press: root.manager.current="player"
+				font_size: self.height *2/3
+			Widget:
+			PlaybackButtons:
+				size_hint_x:2
+			Widget:
+				size_hint_x:2
