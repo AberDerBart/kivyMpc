@@ -177,6 +177,7 @@ class KivyInterface(EventDispatcher):
 	port=NumericProperty(6600)
 	host=StringProperty()
 	playlist=ListProperty()
+	currentId=NumericProperty(0)
 	worker=None
 
 	def __init__(self,**kwargs):
@@ -206,6 +207,7 @@ class KivyInterface(EventDispatcher):
 			self.title=currentsong.get("title",currentsong.get("file","Title"))
 			self.elapsed=float(status.get("elapsed","0"))
 			self.duration=float(currentsong.get("time","0"))
+			self.currentId=int(status.get("songid",-1))
 			if(self.state=="play"):
 				self.elapsed+=time.time()-dataTime
 	def play(self):
