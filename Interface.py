@@ -17,6 +17,7 @@ class InterfaceWorker():
 	connected=False
 	dataTime=0
 	playlist=[]
+	playlistId=0
 
 	def __init__(self,host,port):
 		self.host=host
@@ -83,11 +84,19 @@ class InterfaceWorker():
 		try:
 			status=self.client.status()
 			currentsong=self.client.currentsong()
+			playlistId=status.get("playlist",0)
+
 			self.dataLock.acquire()
 			self.currentsong=currentsong
 			self.status=status
 			self.dataTime=time.time()
+
+			newPlaylist=(self.playlistId != playlistId)
+			self.playlistId=playlistId
 			self.dataLock.release()
+
+			if(newPlaylist):
+				self._playlistUpdate()
 		except ConnectionError as e:
 			self._disconnect()
 		except MPDError as e:
@@ -115,9 +124,6 @@ class InterfaceWorker():
 				if updates:
 					print(updates)
 					self._statusUpdate()
-					if "playlist" in updates:
-						self._playlistUpdate()
-
 				self.client.send_idle()
 			except ConnectionError as e:
 				self._disconnect()
