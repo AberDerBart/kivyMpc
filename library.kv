@@ -1,0 +1,19 @@
+#:kivy 1.0.6
+#:import LibraryWidget Library.LibraryWidget
+#:import iFace Interface.iFace
+#:include player.kv
+
+<LibraryWidget>:
+	BoxLayout:
+		orientation:"vertical"
+		pos: root.pos
+		size: root.size
+		padding: self.height/20
+		spacing: self.height/20
+
+		Button:
+			background_color: (0,0,0,0)
+			text:u"\u2B05"
+			font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+			on_press: root.manager.current="player"
+			font_size: self.height *2/3

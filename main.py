@@ -7,6 +7,7 @@ from kivy.uix.screenmanager import ScreenManager, NoTransition
 from Player import PlayerWidget
 from Interface import iFace
 from Playlist import PlaylistWidget
+from Library import LibraryWidget
 
 class MpdApp(App):
 
@@ -16,6 +17,7 @@ class MpdApp(App):
 		sm.transition=NoTransition()
 		sm.add_widget(PlayerWidget(name="player"))
 		sm.add_widget(PlaylistWidget(name="playlist"))
+		sm.add_widget(LibraryWidget(name="library"))
 		return sm
 	def build_config(self,config):
 		config.setdefaults("Connection",{"host":"localhost","port":6600})
