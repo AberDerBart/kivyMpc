@@ -13,6 +13,7 @@
 		id: nav_drawer
 		size: root.size
 		pos: root.pos
+		min_dist_to_open: 0.5
 		BoxLayout:
 			canvas.before:
 				Color:
@@ -21,6 +22,12 @@
 					pos: self.pos
 					size: self.size
 			orientation:"vertical"
+			Button:
+				on_press: app.stop()
+				background_color: (0,0,0,0)
+				text: u"\u2716"
+				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+				font_size: self.height *2/3
 			Button:
 				on_press: app.open_settings()
 				on_press: root.drawer.state="closed"
