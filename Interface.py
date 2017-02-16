@@ -18,6 +18,8 @@ class InterfaceWorker():
 	dataTime=0
 	playlist=[]
 	playlistId=0
+	
+	libraryView=[]
 
 	def __init__(self,host,port):
 		self.host=host
@@ -68,7 +70,13 @@ class InterfaceWorker():
 				self.client.noidle()
 				for (cmd,args) in queue:
 					try:
-						cmd(self.client,*args)
+						if(cmd==MPDClient.search):
+							libraryView=cmd(self.client,*args)
+							self.dataLock.acquire()
+							self.libraryView=libraryView
+							self.dataLock.release()
+						else:
+							cmd(self.client,*args)
 					except MPDError as e:
 						print("MPDError:",e)
 				self._statusUpdate()
@@ -154,7 +162,7 @@ class InterfaceWorker():
 		self._disconnect()
 	def stop(self):
 		self.runLock.acquire()
-	def command(self,cmd,args=()):
+	def command(self,cmd,args=(),reply=False):
 		self.cmdLock.acquire()
 		self.queue.append((cmd,args))
 		self.cmdLock.release()
@@ -163,7 +171,8 @@ class InterfaceWorker():
 		retn={"status":self.status,
 		"currentsong":self.currentsong,
 		"dataTime":self.dataTime,
-		"playlist":self.playlist
+		"playlist":self.playlist,
+		"libraryView":self.libraryView
 		}
 		self.dataLock.release()
 		return retn
@@ -178,6 +187,7 @@ class KivyInterface(EventDispatcher):
 	host=StringProperty()
 	playlist=ListProperty()
 	currentId=NumericProperty(0)
+	libraryView=ListProperty()
 	worker=None
 
 	def __init__(self,**kwargs):
@@ -199,6 +209,7 @@ class KivyInterface(EventDispatcher):
 			status=data["status"]
 			currentsong=data["currentsong"]
 			dataTime=data["dataTime"]
+			self.libraryView=data["libraryView"]
 
 			self.playlist=data["playlist"]
 
@@ -234,6 +245,9 @@ class KivyInterface(EventDispatcher):
 	def deleteid(self,index):
 		if self.worker:
 			return self.worker.command(MPDClient.deleteid,(index,))
+	def searchLib(self,searchStr):
+		if self.worker:
+			return self.worker.command(MPDClient.search,("any",searchStr))
 		
 
 iFace=KivyInterface()
