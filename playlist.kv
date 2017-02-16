@@ -6,16 +6,22 @@
 #:include player.kv
 
 <PlaylistItem>:
-	Button:
+	Label:
 		background_color: (0,0,0,0)
 		size_hint_x: 9
-		on_press: root.playAction()
 		text: root.displayText()
 		font_size: self.height * 2/3
 		text_size: self.size
 		shorten: True
 		shorten_from: "right"
 		bold: int(iFace.currentId)==int(root.songId)
+	Button:
+		background_color: (0,0,0,0)
+		text: u"\u25B6"
+		font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+		on_press: root.playAction()
+		font_size: self.height * 2/3
+		text_size: self.size
 	Button:
 		background_color: (0,0,0,0)
 		text: u"\u2716"
