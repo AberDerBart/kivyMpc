@@ -1,5 +1,6 @@
 #:kivy 1.0.6
 #:import LibraryWidget Library.LibraryWidget
+#:import LibraryItem Library.LibraryItem
 #:import iFace Interface.iFace
 #:include player.kv
 
@@ -11,8 +12,16 @@
 		padding: self.height/20
 		spacing: self.height/20
 
-		Widget:
+		ListView:
 			size_hint_y: 8
+			selected_color: 1,0,0,1
+			deselected_color: 0,1,0,1
+			adapter:
+				SimpleListAdapter(
+				data=iFace.playlist,
+				cls=LibraryItem,
+				args_converter=lambda row_index,x: {'text':x, 'size_hint_y':None, 'height': 50}
+				)
 
 		BoxLayout:
 			Button:
