@@ -5,15 +5,20 @@
 #:include player.kv
 
 <LibraryItem>:
-	Button:
+	Label:
 		background_color: (0,0,0,0)
 		size_hint_x: 9
-		on_press: root.addAction()
 		text: root.displayText()
 		font_size: self.height * 2/3
 		text_size: self.size
-		shorten: True
 		shorten_from: "right"
+	Button:
+		background_color: (0,0,0,0)
+		text:u"\u2795"
+		font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+		on_press: root.addAction()
+		font_size: self.height * 2/3
+		text_size: self.size
 
 <LibraryWidget>:
 	BoxLayout:
@@ -22,17 +27,6 @@
 		size: root.size
 		padding: self.height/20
 		spacing: self.height/20
-
-		ListView:
-			size_hint_y: 8
-			selected_color: 1,0,0,1
-			deselected_color: 0,1,0,1
-			adapter:
-				SimpleListAdapter(
-				data=iFace.libraryView,
-				cls=LibraryItem,
-				args_converter=lambda row_index,x: {'text':x, 'size_hint_y':None, 'height': 50}
-				)
 
 		BoxLayout:
 			Button:
@@ -46,3 +40,15 @@
 				size_hint_x: 8
 				multiline: False
 				font_size: self.height *2/3
+
+		ListView:
+			size_hint_y: 8
+			selected_color: 1,0,0,1
+			deselected_color: 0,1,0,1
+			adapter:
+				SimpleListAdapter(
+				data=iFace.libraryView,
+				cls=LibraryItem,
+				args_converter=lambda row_index,x: {'text':x, 'size_hint_y':None, 'height': 50}
+				)
+
