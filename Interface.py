@@ -248,6 +248,9 @@ class KivyInterface(EventDispatcher):
 	def searchLib(self,searchStr):
 		if self.worker:
 			return self.worker.command(MPDClient.search,("any",searchStr))
+	def add(self,songUri):
+		if self.worker:
+			return self.worker.command(MPDClient.add,(songUri,))
 		
 
 iFace=KivyInterface()
