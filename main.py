@@ -18,7 +18,6 @@ class MpdApp(App):
 		sm.add_widget(PlayerWidget(name="player"))
 		sm.add_widget(PlaylistWidget(name="playlist"))
 		sm.add_widget(LibraryWidget(name="library"))
-		sm.current="library"
 		return sm
 	def build_config(self,config):
 		config.setdefaults("Connection",{"host":"localhost","port":6600})
