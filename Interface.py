@@ -225,6 +225,9 @@ class KivyInterface(EventDispatcher):
 	def prev(self):
 		if self.worker:
 			return self.worker.command(MPDClient.previous)
+	def stop(self):
+		if self.worker:
+			return self.worker.command(MPDClient.stop)
 	def playid(self,index):
 		if self.worker:
 			return self.worker.command(MPDClient.playid,(index,))
