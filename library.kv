@@ -4,6 +4,24 @@
 #:import iFace Interface.iFace
 #:include player.kv
 
+<LibraryItem>:
+	Button:
+		background_color: (0,0,0,0)
+		size_hint_x: 9
+		on_press: root.addAction()
+		text: root.displayText()
+		font_size: self.height * 2/3
+		text_size: self.size
+		shorten: True
+		shorten_from: "right"
+	Button:
+		background_color: (0,0,0,0)
+		text: u"\u2716"
+		font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+		on_press: root.playAction()
+		font_size: self.height * 2/3
+		text_size: self.size
+
 <LibraryWidget>:
 	BoxLayout:
 		orientation:"vertical"
@@ -18,7 +36,7 @@
 			deselected_color: 0,1,0,1
 			adapter:
 				SimpleListAdapter(
-				data=iFace.playlist,
+				data=iFace.libraryView,
 				cls=LibraryItem,
 				args_converter=lambda row_index,x: {'text':x, 'size_hint_y':None, 'height': 50}
 				)
@@ -31,6 +49,7 @@
 				on_press: root.manager.current="player"
 				font_size: self.height *2/3
 			TextInput:
+				on_text_validate: iFace.searchLib(self.text)
 				size_hint_x: 8
 				multiline: False
 				font_size: self.height *2/3
