@@ -17,8 +17,6 @@ class LibraryItem(SelectableView,BoxLayout):
 		return text
 	def addAction(self):
 		iFace.add(self.songDict["file"])
-	def playAction(self):
-		print("open")
 
 class LibraryWidget(Screen):
 	pass
