@@ -9,7 +9,7 @@ from Interface import iFace
 from Playlist import PlaylistWidget
 from Library import LibraryWidget
 
-class MpdApp(App):
+class MpcApp(App):
 
 	def build(self):
 		self.updateConfig()
@@ -25,7 +25,7 @@ class MpdApp(App):
 		settings.add_json_panel("Connection", self.config, "connectionSettings.json")
 	def close_settings(self,settings=None):
 		self.updateConfig()
-		super(MpdApp,self).close_settings(settings)
+		super(MpcApp,self).close_settings(settings)
 	def updateConfig(self):
 		host=self.config.get("Connection","host")
 		port=self.config.get("Connection","port")
@@ -33,5 +33,5 @@ class MpdApp(App):
 
 
 if __name__ == '__main__':
-	app=MpdApp()
+	app=MpcApp()
 	app.run()
