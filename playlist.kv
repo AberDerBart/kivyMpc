@@ -6,15 +6,18 @@
 #:include player.kv
 
 <PlaylistItem>:
+	artist: ''
+	title: ''
+	file: ''
 	Label:
 		background_color: (0,0,0,0)
-		size_hint_x: 9
-		text: root.displayText()
+		size_hint_x: 8
+		text: root.displayText(root.artist,root.title,root.file)
 		font_size: self.height * 2/3
 		text_size: self.size
 		shorten: True
 		shorten_from: "right"
-		bold: int(iFace.currentId)==int(root.songId)
+		bold: int(iFace.currentId)==int(root.id)
 	Button:
 		background_color: (0,0,0,0)
 		text: u"\u25B6"
@@ -45,16 +48,20 @@
 		padding: self.height/20
 		spacing: self.height/20
 
-		ListView:
+		RecycleView:
+			data: iFace.playlist
+			scroll_type: ['bars', 'content']
+			scroll_wheel_distance: dp(114)
+			bar_width: dp(10)
+			viewclass: 'PlaylistItem'
 			size_hint_y: 8
-			selected_color: 1,0,0,1
-			deselected_color: 0,1,0,1
-			adapter:
-				SimpleListAdapter(
-				data=iFace.playlist,
-				cls=PlaylistItem,
-				args_converter=lambda row_index,x: {'text':x, 'size_hint_y':None, 'height': 50}
-				)
+			RecycleBoxLayout:
+				default_size: None, dp(56)
+				default_size_hint: 1, None
+				size_hint_y: None
+				height: self.minimum_height
+				orientation: 'vertical'
+				spacing: dp(2)
 
 		BoxLayout:
 			Button:

@@ -1,28 +1,25 @@
 from kivy.uix.screenmanager import Screen
-from kivy.uix.listview import SelectableView
 from kivy.uix.boxlayout import BoxLayout
 from Interface import iFace
-from kivy.properties import ObjectProperty,NumericProperty
+from kivy.properties import StringProperty
 
-class PlaylistItem(SelectableView,BoxLayout):
-	songDict={}
-	songId=NumericProperty(-1)
+class PlaylistItem(BoxLayout):
+	id=StringProperty("-1")
+	artist=StringProperty()
+	title=StringProperty()
+	file=StringProperty()
 	def __init__(self, **kwargs):
-		self.songDict = kwargs.pop('text', {})
-		self.songId=int(self.songDict.get("id",-1))
 		super(PlaylistItem, self).__init__(**kwargs)
 
-	def displayText(self):
-		text=""
-		if("artist" in self.songDict):
-			text+=self.songDict["artist"]+" - "
-		text+=self.songDict.get("title", self.songDict.get("file"))
-		return text
+	def displayText(self,artist,title,fileName):
+		if(artist != "" and title != ""):
+			return artist + " - " + title
+		else:
+			return fileName
 	def playAction(self):
-		iFace.playid(int(self.songId))
+		iFace.playid(int(self.id))
 	def delAction(self):
-		iFace.deleteid(int(self.songId))
+		iFace.deleteid(int(self.id))
 
 class PlaylistWidget(Screen):
-	def __init__(self,**kwargs):
-		super(PlaylistWidget,self).__init__(**kwargs)
+	pass
