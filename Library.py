@@ -1,22 +1,22 @@
 from kivy.uix.screenmanager import Screen
 from Interface import iFace
-from kivy.uix.listview import SelectableView
 from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import StringProperty
 
-class LibraryItem(SelectableView,BoxLayout):
-	songDict={}
+class LibraryItem(BoxLayout):
+	artist=StringProperty()
+	title=StringProperty()
+	file=StringProperty()
 	def __init__(self, **kwargs):
-		self.songDict = kwargs.pop('text', {})
 		super(LibraryItem, self).__init__(**kwargs)
 
-	def displayText(self):
-		text=""
-		if("artist" in self.songDict):
-			text+=self.songDict["artist"]+" - "
-		text+=self.songDict.get("title", self.songDict.get("file"))
-		return text
+	def displayText(self,artist,title,fileName):
+		if(artist != "" and title != ""):
+			return artist + " - " + title
+		else:
+			return fileName
 	def addAction(self):
-		iFace.add(self.songDict["file"])
+		iFace.add(self.file)
 
 class LibraryWidget(Screen):
 	pass
