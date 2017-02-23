@@ -27,17 +27,17 @@
 
 <VolumeDropDown>:
 	MenuButton:
-		text: 'increase'
+		text: '+'
 		size_hint_y: None
-		height: 44
+		height: root.itemHeight
 	MenuLabel:
 		text: '50'
 		size_hint_y: None
-		height: 44
+		height: root.itemHeight
 	MenuButton:
-		text: 'decrease'
+		text: '-'
 		size_hint_y: None
-		height: 44
+		height: root.itemHeight
 
 <VolumeButton>:
 	on_release:self.dropDown.open(self)
