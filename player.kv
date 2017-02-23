@@ -1,6 +1,8 @@
 #:import NavigationDrawer libs.navigationdrawer.NavigationDrawer
 #:import iFace Interface.iFace
 
+#:include navbar.kv
+
 <PlayerWidget>:
 	drawer: nav_drawer
 	canvas:
@@ -14,44 +16,8 @@
 		size: root.size
 		pos: root.pos
 		min_dist_to_open: 0.5
-		BoxLayout:
-			canvas.before:
-				Color:
-					rgb: .05,.05,.05
-				Rectangle:
-					pos: self.pos
-					size: self.size
-			orientation:"vertical"
-			Button:
-				on_press: app.stop()
-				background_color: (0,0,0,0)
-				text: u"\u2716"
-				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-				font_size: self.height *2/3
-			Button:
-				on_press: app.open_settings()
-				on_press: root.drawer.state="closed"
-				background_color: (0,0,0,0)
-				text: u"\u2699"
-				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-				font_size: self.height *2/3
-			Button:
-				background_color: (0,0,0,0)
-				text: u"\u23F0"
-				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-				font_size: self.height *2/3
-			Button:
-				on_press: root.manager.current="library"
-				background_color: (0,0,0,0)
-				text: "Lib" 
-				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-				font_size: self.height *2/3
-			Button:
-				on_press: root.manager.current="playlist"
-				background_color: (0,0,0,0)
-				text: "Pll"
-				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-				font_size: self.height *2/3
+		NavBar:
+			screen: root
 		BoxLayout:
 			pos:root.pos
 			orientation: "vertical"
