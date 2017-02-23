@@ -53,22 +53,25 @@
 			pos: self.pos
 			size: self.size
 	MenuIconButton:
-		on_press: root.screen.manager.current="player"
-		text:u"\u2B05"
-	MenuIconButton:
 		on_press: app.stop()
 		text: u"\u2716"
 	MenuIconButton:
 		on_press: app.open_settings()
 		text: u"\u2699"
 	MenuIconButton:
-		text: u"\u23F0"
-	MenuButton:
-		on_press: root.screen.manager.current="library"
-		text: "Lib" 
+		on_press: root.screen.manager.current="player"
+		text: u"\u23EF"
+		underline: (root.screen!=None and root.screen.name=="player")
 	MenuButton:
 		on_press: root.screen.manager.current="playlist"
 		text: "Pll"
+		underline: (root.screen!=None and root.screen.name=="playlist")
+	MenuButton:
+		on_press: root.screen.manager.current="library"
+		text: "Lib" 
+		underline: (root.screen!=None and root.screen.name=="library")
+	MenuIconButton:
+		text: u"\u23F0"
 	VolumeButton:
 		text:"vol"
 
