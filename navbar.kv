@@ -1,6 +1,41 @@
 #:kivy 1.9.2
 #:import NavBar NavBar.NavBar
 
+<VolumeDropDown>:
+	Button:
+		canvas.before:
+			Color:
+				rgb: .05,.05,.05
+			Rectangle:
+				pos: self.pos
+				size: self.size
+		text: 'increase'
+		size_hint_y: None
+		height: 44
+	Label:
+		canvas.before:
+			Color:
+				rgb: .05,.05,.05
+			Rectangle:
+				pos: self.pos
+				size: self.size
+		text: '50'
+		size_hint_y: None
+		height: 44
+	Button:
+		canvas.before:
+			Color:
+				rgb: .05,.05,.05
+			Rectangle:
+				pos: self.pos
+				size: self.size
+		text: 'decrease'
+		size_hint_y: None
+		height: 44
+
+<VolumeButton>:
+	on_release:self.dropDown.open(self)
+
 <NavBar>:
 	canvas.before:
 		Color:
@@ -8,7 +43,6 @@
 		Rectangle:
 			pos: self.pos
 			size: self.size
-	orientation:"vertical"
 	Button:
 		on_press: app.stop()
 		background_color: (0,0,0,0)
@@ -39,3 +73,6 @@
 		text: "Pll"
 		font_name: "/usr/share/fonts/TTF/Symbola.ttf"
 		font_size: self.height *2/3
+	VolumeButton:
+		text:"volume"
+	
