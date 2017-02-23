@@ -9,6 +9,4 @@ class PlaybackButtons(Widget):
 	pass
 
 class PlayerWidget(Screen):
-	drawer=ObjectProperty(None)
-	def on_leave(self):
-		self.drawer.state="closed"
+	pass

@@ -4,27 +4,20 @@
 #:include navbar.kv
 
 <PlayerWidget>:
-	drawer: nav_drawer
 	canvas:
 		Color:
 			rgb: 0,0,0
 		Rectangle:
 			pos: self.pos
 			size: self.size
-	NavigationDrawer:
-		id: nav_drawer
-		size: root.size
-		pos: root.pos
-		min_dist_to_open: 0.5
-		Button:
+	NavBarFrame:
+		screenManager:root.manager
 		BoxLayout:
+			size_hint_y:8
 			pos:root.pos
 			orientation: "vertical"
 			size: root.size
 			padding: self.height/10
-			NavBar:
-				screen: root
-				orientation:"horizontal"
 			Label:
 				font_size:self.height*0.5
 				text_size: self.size
