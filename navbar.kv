@@ -1,5 +1,6 @@
 #:kivy 1.9.2
 #:import NavBar NavBar.NavBar
+#:import iFace Interface.iFace
 
 
 <MenuButton>:
@@ -30,14 +31,16 @@
 		text: '+'
 		size_hint_y: None
 		height: root.itemHeight
+		on_press: iFace.incVol()
 	MenuLabel:
-		text: '50'
+		text: str(iFace.volume)
 		size_hint_y: None
 		height: root.itemHeight
 	MenuButton:
 		text: '-'
 		size_hint_y: None
 		height: root.itemHeight
+		on_press: iFace.decVol()
 
 <VolumeButton>:
 	on_release:self.dropDown.open(self)

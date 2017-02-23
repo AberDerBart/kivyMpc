@@ -188,6 +188,7 @@ class KivyInterface(EventDispatcher):
 	playlist=ListProperty()
 	currentId=NumericProperty(0)
 	libraryView=ListProperty()
+	volume=NumericProperty(-1)
 	worker=None
 
 	def __init__(self,**kwargs):
@@ -219,6 +220,7 @@ class KivyInterface(EventDispatcher):
 			self.elapsed=float(status.get("elapsed","0"))
 			self.duration=float(currentsong.get("time","0"))
 			self.currentId=int(status.get("songid",-1))
+			self.volume=int(status.get("volume",-1))
 			if(self.state=="play"):
 				self.elapsed+=time.time()-dataTime
 	def play(self):
@@ -251,6 +253,12 @@ class KivyInterface(EventDispatcher):
 	def add(self,songUri):
 		if self.worker:
 			return self.worker.command(MPDClient.add,(songUri,))
+	def incVol(self):
+		if self.worker:
+			self.worker.command(MPDClient.setvol,(self.volume+1,))
+	def decVol(self):
+		if self.worker:
+			self.worker.command(MPDClient.setvol,(self.volume-1,))
 		
 
 iFace=KivyInterface()
