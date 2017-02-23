@@ -1,34 +1,40 @@
 #:kivy 1.9.2
 #:import NavBar NavBar.NavBar
 
+
+<MenuButton>:
+	canvas.before:
+		Color:
+			rgb: .05,.05,.05
+		Rectangle:
+			pos: self.pos
+			size: self.size
+	background_color:(0,0,0,0)
+	font_size: self.height *2/3
+
+<MenuIconButton>:
+	font_name: "/usr/share/fonts/TTF/Symbola.ttf"
+
+<MenuLabel>:
+	canvas.before:
+		Color:
+			rgb: .05,.05,.05
+		Rectangle:
+			pos: self.pos
+			size: self.size
+	background_color:(0,0,0,0)
+	font_size: self.height *2/3
+
 <VolumeDropDown>:
-	Button:
-		canvas.before:
-			Color:
-				rgb: .05,.05,.05
-			Rectangle:
-				pos: self.pos
-				size: self.size
+	MenuButton:
 		text: 'increase'
 		size_hint_y: None
 		height: 44
-	Label:
-		canvas.before:
-			Color:
-				rgb: .05,.05,.05
-			Rectangle:
-				pos: self.pos
-				size: self.size
+	MenuLabel:
 		text: '50'
 		size_hint_y: None
 		height: 44
-	Button:
-		canvas.before:
-			Color:
-				rgb: .05,.05,.05
-			Rectangle:
-				pos: self.pos
-				size: self.size
+	MenuButton:
 		text: 'decrease'
 		size_hint_y: None
 		height: 44
@@ -43,36 +49,21 @@
 		Rectangle:
 			pos: self.pos
 			size: self.size
-	Button:
+	MenuIconButton:
 		on_press: app.stop()
-		background_color: (0,0,0,0)
 		text: u"\u2716"
-		font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-		font_size: self.height *2/3
-	Button:
+	MenuIconButton:
 		on_press: app.open_settings()
 		on_press: root.screen.drawer.state="closed"
-		background_color: (0,0,0,0)
 		text: u"\u2699"
-		font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-		font_size: self.height *2/3
-	Button:
-		background_color: (0,0,0,0)
+	MenuIconButton:
 		text: u"\u23F0"
-		font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-		font_size: self.height *2/3
-	Button:
+	MenuButton:
 		on_press: root.screen.manager.current="library"
-		background_color: (0,0,0,0)
 		text: "Lib" 
-		font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-		font_size: self.height *2/3
-	Button:
+	MenuButton:
 		on_press: root.screen.manager.current="playlist"
-		background_color: (0,0,0,0)
 		text: "Pll"
-		font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-		font_size: self.height *2/3
 	VolumeButton:
-		text:"volume"
+		text:"vol"
 	
