@@ -14,10 +14,10 @@ class MenuLabel(Label):
 	pass
 
 class NavBar(BoxLayout):
-	screenManager=ObjectProperty()
+	screen=ObjectProperty()
 
 class NavBarFrame(BoxLayout):
-	screenManager=ObjectProperty()
+	screen=ObjectProperty()
 
 class VolumeDropDown(DropDown):
 	itemHeight=NumericProperty(50)
