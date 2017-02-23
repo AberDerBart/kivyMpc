@@ -10,7 +10,7 @@
 	file: ''
 	Label:
 		background_color: (0,0,0,0)
-		size_hint_x: 9
+		size_hint_x: 15
 		text: root.displayText(root.artist,root.title,root.file)
 		font_size: self.height * 2/3
 		text_size: self.size
@@ -25,37 +25,29 @@
 		text_size: self.size
 
 <LibraryWidget>:
-	BoxLayout:
-		orientation:"vertical"
-		pos: root.pos
-		size: root.size
-		padding: self.height/20
-		spacing: self.height/20
-
+	NavBarFrame:
+		screen:root
 		BoxLayout:
-			Button:
-				background_color: (0,0,0,0)
-				text:u"\u2B05"
-				font_name: "/usr/share/fonts/TTF/Symbola.ttf"
-				on_press: root.manager.current="player"
-				font_size: self.height *2/3
+			size_hint_y: 8
+			orientation:"vertical"
+			padding: self.height/20
+
 			TextInput:
 				on_text_validate: iFace.searchLib(self.text)
-				size_hint_x: 8
 				multiline: False
 				font_size: self.height *2/3
 
-		RecycleView:
-			data: iFace.libraryView
-			scroll_type: ['bars', 'content']
-			scroll_wheel_distance: dp(114)
-			bar_width: dp(10)
-			viewclass: 'LibraryItem'
-			size_hint_y: 8
-			RecycleBoxLayout:
-				default_size: None, dp(56)
-				default_size_hint: 1, None
-				size_hint_y: None
-				height: self.minimum_height
-				orientation: 'vertical'
-				spacing: dp(2)
+			RecycleView:
+				data: iFace.libraryView
+				scroll_type: ['bars', 'content']
+				scroll_wheel_distance: dp(114)
+				bar_width: dp(10)
+				viewclass: 'LibraryItem'
+				size_hint_y: 8
+				RecycleBoxLayout:
+					default_size: None, dp(56)
+					default_size_hint: 1, None
+					size_hint_y: None
+					height: self.minimum_height
+					orientation: 'vertical'
+					spacing: dp(2)
