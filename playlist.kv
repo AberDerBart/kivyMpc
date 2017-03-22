@@ -10,6 +10,13 @@
 	artist: ''
 	title: ''
 	file: ''
+	canvas:
+		Color:
+			rgb: root.background
+		Rectangle:
+			size:self.size
+			pos:self.pos
+
 	Label:
 		background_color: (0,0,0,0)
 		size_hint_x: 8
@@ -18,7 +25,6 @@
 		text_size: self.size
 		shorten: True
 		shorten_from: "right"
-		bold: int(iFace.currentId)==int(root.id)
 	Button:
 		background_color: (0,0,0,0)
 		text: u"\u25B6"
