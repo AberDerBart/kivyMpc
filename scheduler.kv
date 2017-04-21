@@ -12,6 +12,31 @@
 			size: self.size
 	NavBarFrame:
 		screen:root
-		Button:
+		BoxLayout:
 			size_hint_y:8
-			text: "text"
+			pos:root.pos
+			orientation: "vertical"
+			size: root.size
+			padding: self.height/10
+			spacing: self.height/10
+			BoxLayout:
+				orientation:"horizontal"
+				Label:
+					size_hint_x:2
+					text:"Alarm Time:"
+				Button:
+					text:"hh"
+				Button:
+					text:"mm"
+				Button:
+					text:"Tschau"
+			BoxLayout:
+				orientation:"horizontal"
+				Label:
+					size_hint_x:2
+					text:"Sleep Timer:"
+				Button:
+					size_hint_x:2
+					text:"15 min"
+				Button:
+					text:"OK"
