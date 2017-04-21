@@ -1,0 +1,17 @@
+#:import NavigationDrawer libs.navigationdrawer.NavigationDrawer
+#:import iFace Interface.iFace
+
+#:include navbar.kv
+
+<SchedulerWidget>:
+	canvas:
+		Color:
+			rgb: 0,0,0
+		Rectangle:
+			pos: self.pos
+			size: self.size
+	NavBarFrame:
+		screen:root
+		Button:
+			size_hint_y:8
+			text: "text"

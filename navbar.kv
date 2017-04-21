@@ -72,6 +72,8 @@
 		underline: (root.screen!=None and root.screen.name=="library")
 	MenuIconButton:
 		text: u"\u23F0"
+		underline: (root.screen!=None and root.screen.name=="scheduler")
+		on_press: root.screen.manager.current="scheduler"
 	VolumeButton:
 		text:"vol"
 

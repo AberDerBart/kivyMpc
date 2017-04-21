@@ -8,6 +8,7 @@ from Player import PlayerWidget
 from Interface import iFace
 from Playlist import PlaylistWidget
 from Library import LibraryWidget
+from Scheduler import SchedulerWidget
 
 class MpcApp(App):
 
@@ -18,6 +19,7 @@ class MpcApp(App):
 		sm.add_widget(PlayerWidget(name="player"))
 		sm.add_widget(PlaylistWidget(name="playlist"))
 		sm.add_widget(LibraryWidget(name="library"))
+		sm.add_widget(SchedulerWidget(name="scheduler"))
 		return sm
 	def build_config(self,config):
 		config.setdefaults("Connection",{"host":"localhost","port":6600})
